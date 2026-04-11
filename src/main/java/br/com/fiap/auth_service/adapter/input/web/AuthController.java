@@ -7,10 +7,7 @@ import br.com.fiap.auth_service.adapter.input.web.dto.RegisterResponseDto;
 import br.com.fiap.auth_service.adapter.input.web.dto.TokenResponse;
 import br.com.fiap.auth_service.application.port.input.LoginUseCase;
 import br.com.fiap.auth_service.application.port.input.RegisterUserUseCase;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")

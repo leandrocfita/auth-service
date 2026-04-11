@@ -6,6 +6,7 @@ import br.com.fiap.auth_service.application.port.output.AuthUserRepositoryPort;
 import br.com.fiap.auth_service.application.port.output.PasswordEncoderPort;
 import br.com.fiap.auth_service.application.port.output.TokenGeneratorPort;
 import br.com.fiap.auth_service.domain.AuthUser;
+import br.com.fiap.auth_service.domain.exceptions.LoginAlreadyExistsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,9 @@ import java.util.UUID;
 
 @Service
 @Transactional
-public class AuthService implements RegisterUserUseCase, LoginUseCase {
+public class AuthService implements
+        RegisterUserUseCase,
+        LoginUseCase {
 
     private final AuthUserRepositoryPort repository;
     private final PasswordEncoderPort passwordEncoder;
@@ -51,7 +54,7 @@ public class AuthService implements RegisterUserUseCase, LoginUseCase {
     public UUID register(String login, String password) {
 
         repository.findByLogin(login).ifPresent(authUser -> {
-            throw new IllegalArgumentException("Login already exists");
+            throw new LoginAlreadyExistsException();
         });
 
         AuthUser authUser = AuthUser.newUser(

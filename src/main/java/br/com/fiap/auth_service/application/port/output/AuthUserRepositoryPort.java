@@ -7,4 +7,5 @@ import java.util.Optional;
 public interface AuthUserRepositoryPort {
     Optional<AuthUser> findByLogin(String login);
     AuthUser save(AuthUser authUser);
+    Optional<AuthUser> findByExternalId(String externalId);
 }

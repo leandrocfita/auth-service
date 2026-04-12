@@ -25,4 +25,9 @@ public class AuthUserRepository implements AuthUserRepositoryPort {
     public AuthUser save(AuthUser authUser) {
         return repository.save(authUser);
     }
+
+    @Override
+    public Optional<AuthUser> findByExternalId(String externalId) {
+        return repository.findByExternalId(externalId);
+    }
 }

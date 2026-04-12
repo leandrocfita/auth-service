@@ -27,7 +27,11 @@ public class AuthController {
     @PostMapping("/register")
     public RegisterResponseDto register(@RequestBody RegisterRequestDto req) {
         return new RegisterResponseDto(
-            registerUseCase.register(req.login(), req.password()).toString()
+            registerUseCase.register(
+                    req.login(),
+                    req.password(),
+                    req.externalId()
+            ).toString()
         );
     }
 

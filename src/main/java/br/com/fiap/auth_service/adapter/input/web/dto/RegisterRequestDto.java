@@ -8,6 +8,9 @@ public record RegisterRequestDto(
         String login,
 
         @NotEmpty
-        String password
+        String password,
+
+        @NotEmpty
+        String externalId
 ) {
 }

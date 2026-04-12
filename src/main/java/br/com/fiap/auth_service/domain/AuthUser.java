@@ -34,7 +34,10 @@ public class AuthUser {
     @Column(nullable = false)
     private boolean active;
 
-    @Column(nullable = true)
+    @Column(nullable = false, unique = true)
+    private String externalId;
+
+    @Column()
     private Instant passwordUpdatedAt;
 
     @CreationTimestamp
@@ -45,7 +48,7 @@ public class AuthUser {
     @Column(nullable = false)
     private Instant lastUpdated;
 
-    public static AuthUser newUser(String login, String password){
+    public static AuthUser newUser(String login, String password, String externalId){
         validatePassword(password);
         return new AuthUser(
                 null,
@@ -53,6 +56,7 @@ public class AuthUser {
                 password,
                 1,
                 true,
+                externalId,
                 null,
                 null,
                 null

@@ -35,10 +35,11 @@ public class JwtAdapter implements TokenGeneratorPort, TokenValidatorPort {
         Instant now = Instant.now();
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(user.getId().toString())
+                .subject(user.getExternalId())
                 .issuer(ISSUER)
                 .claim("login", user.getLogin())
                 .claim("ver", user.getTokenVersion())
+                .claim("authId", user.getId().toString())
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(expiration))
                 .build();

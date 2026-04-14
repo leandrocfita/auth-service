@@ -1,15 +1,6 @@
 # --- 1. Etapa de Build ---
 # Usa uma imagem com Maven ja instalado para compilar o projeto
 FROM maven:3.9.9-amazoncorretto-21-alpine as build
-
-ARG POSTGRES_PASSWORD_ARG
-ARG DB_HOST_ARG
-ARG DB_PORT_ARG
-
-ENV POSTGRES_PASSWORD=$POSTGRES_PASSWORD_ARG
-ENV DB_HOST=$DB_HOST_ARG
-ENV DB_PORT=$DB_PORT_ARG
-
 WORKDIR /app
 
 COPY pom.xml .

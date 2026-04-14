@@ -68,13 +68,13 @@ jobs:
           cache: 'maven'
 
       - name: Login to Docker Hub
-        uses: docker/login-action@e92390c5fb4206140f8094dcd7c058de44183f1b # v3.1.0
+        uses: docker/login-actionlogin-action@v2 # v3.1.0
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@94ab15c0a11cec6b1805632595475529e1aa3540 # v5.3.0
+        uses: docker/build-push-action@v4 # v5.3.0
         with:
           context: .
           push: true

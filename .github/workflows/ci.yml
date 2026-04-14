@@ -41,11 +41,7 @@ jobs:
         cache: 'maven'
 
     - name: Test and Verify with SonarQube
-      run: mvn verify sonar:sonar \
-        -Dsonar.projectKey=cheffy-auth \
-        -Dsonar.host.url=https://sonarcloud.io \
-        -Dsonar.organization=rodfc773 \
-        -Dsonar.login=$SONAR_TOKEN
+      run: mvn verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=rodfc773_cheffy-auth
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

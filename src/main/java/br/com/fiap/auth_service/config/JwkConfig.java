@@ -16,17 +16,38 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
+
 
 @Configuration
 public class JwkConfig {
 
+    private final RsaKeyProviderPort keyProvider;
+
+    public  JwkConfig(RsaKeyProviderPort keyProvider) {
+        this.keyProvider = keyProvider;
+    }
+
+
     @Bean
-    public RSAKey rsaKey(RsaKeyProviderPort keyProvider){
+    public RSAKey rsaKey(RsaKeyProviderPort keyProvider) throws NoSuchAlgorithmException {
+
+        String kid =
+                Base64.getUrlEncoder()
+                        .withoutPadding()
+                        .encodeToString(
+                                MessageDigest
+                                        .getInstance("SHA-256")
+                                        .digest(keyProvider.publicKey().getEncoded())
+                        );
+
         return new RSAKey.Builder(keyProvider.publicKey())
                 .privateKey(keyProvider.privateKey())
                 .keyUse(KeyUse.SIGNATURE)
                 .algorithm(JWSAlgorithm.RS256)
-                .keyID("auth-service-key-1")
+                .keyID(kid)
                 .build();
     }
 

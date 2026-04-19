@@ -7,6 +7,7 @@ import br.com.fiap.auth_service.domain.AuthUser;
 import br.com.fiap.auth_service.security.JwtProperties;
 import br.com.fiap.auth_service.adapter.output.security.RsaKeyProviderAdapter;
 import io.jsonwebtoken.Jwts;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,8 @@ public class JwtAdapter implements TokenGeneratorPort, TokenValidatorPort {
     private final JwtDecoder jwtDecoder;
     private long expiration;
 
-    private static final String ISSUER = "auth-service";
+    @Value("${jwt.issuer}")
+    private String ISSUER;
 
     public JwtAdapter(
             JwtEncoder jwtEncoder,

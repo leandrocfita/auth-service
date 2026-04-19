@@ -1,4 +1,4 @@
-package br.com.fiap.auth_service.adapter.output.security;
+package br.com.fiap.auth_service.adapter.input.security;
 
 import br.com.fiap.auth_service.application.port.output.RsaKeyProviderPort;
 import org.springframework.core.io.ClassPathResource;

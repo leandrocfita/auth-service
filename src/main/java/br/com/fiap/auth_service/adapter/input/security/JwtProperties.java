@@ -1,4 +1,4 @@
-package br.com.fiap.auth_service.security;
+package br.com.fiap.auth_service.adapter.input.security;
 
 import lombok.Getter;
 import lombok.Setter;

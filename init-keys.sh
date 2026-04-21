@@ -1,6 +1,8 @@
 #!/bin/sh
 
-KEY_DIR=/app/keys
+export $(grep -v '^#' .env | xargs)
+
+KEY_DIR=${KEY_DIR}
 
 echo "Checking RSA keys..."
 

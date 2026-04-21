@@ -35,7 +35,6 @@ COPY init-keys.sh /app/init-keys.sh
 
 # 4. Define as permissões corretas para o usuário da aplicação
 RUN chown -R appuser:appgroup /app
-RUN chown -R appuser:appgroup /keys
 RUN chmod +x /app/init-keys.sh
 RUN dos2unix /app/init-keys.sh && chmod +x /app/init-keys.sh
 

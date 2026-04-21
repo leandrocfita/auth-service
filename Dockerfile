@@ -17,10 +17,7 @@ RUN mvn package -DskipTests
 FROM amazoncorretto:21.0.3-alpine3.19
 
 # 1. Instala openssl e cria o diretório para as chaves (como root)
-#RUN apk add --no-cache openssl && \
-#    mkdir /keys
-
-RUN apk add openssl
+RUN apk add --no-cache openssl
 
 # 2. Cria um grupo e um usuário de sistema dedicados para rodar a aplicação
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup

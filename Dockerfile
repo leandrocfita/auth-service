@@ -30,7 +30,7 @@ WORKDIR /app
 # 3. Copia o JAR da etapa de build e o script de inicialização
 COPY --from=build /app/target/*.jar app.jar
 
-RUN mkdir /keys
+RUN mkdir -p /app/keys && chown -R appuser:appgroup /app/keys
 COPY init-keys.sh /app/init-keys.sh
 
 # 4. Define as permissões corretas para o usuário da aplicação

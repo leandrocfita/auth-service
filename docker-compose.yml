@@ -29,3 +29,8 @@ services:
         # Now, execute the original entrypoint from the Dockerfile
         exec /app/init-keys.sh java -jar /app/app.jar
       "
+
+
+networks:
+  auth-service-network:
+    driver: bridge

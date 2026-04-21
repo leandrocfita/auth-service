@@ -31,15 +31,14 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 
 RUN mkdir -p /app/keys && chown -R appuser:appgroup /app/keys
-COPY init-keys.sh /app/init-keys.sh
+COPY init-keys.sh /app/docker/init-keys.sh
 
 # 4. Define as permissões corretas para o usuário da aplicação
 RUN chown -R appuser:appgroup /app
-RUN chmod +x /app/init-keys.sh
-RUN dos2unix /app/init-keys.sh && chmod +x /app/init-keys.sh
+RUN dos2unix /app/docker/init-keys.sh && chmod +x /app/docker/init-keys.sh
 
 USER appuser
 
 # 6. Define o entrypoint para o nosso script, que então iniciará a aplicação Java
-ENTRYPOINT ["/app/init-keys.sh"]
+ENTRYPOINT ["/app/docker/init-keys.sh"]
 CMD ["java", "-jar", "/app/app.jar"]

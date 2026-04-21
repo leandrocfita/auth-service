@@ -1,6 +1,6 @@
 #!/bin/sh
 
-KEY_DIR=/keys
+KEY_DIR=/app/keys
 
 echo "Checking RSA keys..."
 

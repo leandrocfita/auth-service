@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  cheffy-auth-service:
+    container_name: auth-service
+    env_file: .env # This will load all variables from your .env file
+    build:
+      context: .
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./keys:/keys

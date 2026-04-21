@@ -76,5 +76,13 @@ jobs:
         uses: docker/build-push-action@v4 # v5.3.0
         with:
           context: .
+          build-args: |
+            JWT_EXPIRATION=${{ secrets.JWT_EXPIRATION }}
+            JWT_ISSUER=${{ secrets.JWT_ISSUER }}
+            DB_HOST=${{ secrets.DB_HOST }}
+            DB_PASSWORD=${{secrets.DB_PASSWORD}}
+            DB_PORT=${{secrets.DB_PORT}}
+            DB_USERNAME=${{secrets.DB_USERNAME}}
+            JWT_SECRET=${{secrets.JWT_SECRET}}
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/auth-service:latest

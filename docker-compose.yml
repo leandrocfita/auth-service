@@ -20,15 +20,6 @@ services:
     # This 'command' overrides the Dockerfile's ENTRYPOINT.
     # It first prints all environment variables, then runs the original command.
     # Check your 'docker-compose up' logs to see the output.
-    # Remove this 'command' block after you have verified the variables.
-    command: >
-      sh -c "
-        echo '--- Verifying Environment Variables ---'
-        printenv | sort
-        echo '-------------------------------------'
-        # Now, execute the original entrypoint from the Dockerfile
-        exec /app/init-keys.sh java -jar /app/app.jar
-      "
 
 
 networks:

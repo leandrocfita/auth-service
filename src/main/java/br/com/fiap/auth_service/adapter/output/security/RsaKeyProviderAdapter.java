@@ -13,7 +13,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 @Component
-public class RsaKeyOutputProviderAdapter implements RsaKeyProviderPort {
+public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
     public static final String PRIVATE_KEY_PATH = "keys/private.pem";
     public static final String PUBLIC_KEY_PATH = "keys/public.pem";
@@ -21,7 +21,7 @@ public class RsaKeyOutputProviderAdapter implements RsaKeyProviderPort {
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
 
-    public RsaKeyOutputProviderAdapter() throws Exception {
+    public RsaKeyProviderAdapter() throws Exception {
      this.privateKey = loadPrivateKey();
      this.publicKey = loadPublicKey();
     }

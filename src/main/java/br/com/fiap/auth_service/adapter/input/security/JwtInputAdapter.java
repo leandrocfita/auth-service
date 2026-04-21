@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 
 @Service
-public class JwtAdapter implements TokenGeneratorPort{
+public class JwtInputAdapter implements TokenGeneratorPort{
 
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
@@ -18,9 +18,9 @@ public class JwtAdapter implements TokenGeneratorPort{
     @Value("${jwt.issuer}")
     private String ISSUER;
 
-    public JwtAdapter(
+    public JwtInputAdapter(
             JwtEncoder jwtEncoder,
-            JwtProperties jwtProperties,
+            JwtInputProperties jwtProperties,
             JwtDecoder jwtDecoder) {
         this.jwtEncoder = jwtEncoder;
         this.jwtDecoder = jwtDecoder;

@@ -4,7 +4,6 @@ import br.com.fiap.auth_service.application.port.output.RsaKeyProviderPort;
 import br.com.fiap.auth_service.application.port.output.TokenGeneratorPort;
 import br.com.fiap.auth_service.domain.AuthUser;
 import br.com.fiap.auth_service.security.JwtProperties;
-import br.com.fiap.auth_service.adapter.output.security.RsaKeyProviderAdapter;
 import io.jsonwebtoken.Jwts;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +11,12 @@ import java.time.Instant;
 import java.util.Date;
 
 @Service
-public class JwtAdapter implements TokenGeneratorPort {
+public class JwtOutputAdapter implements TokenGeneratorPort {
 
     private final RsaKeyProviderPort keys;
     private long expiration;
 
-    public JwtAdapter(RsaKeyProviderPort keys, JwtProperties jwtProperties) {
+    public JwtOutputAdapter(RsaKeyProviderPort keys, JwtProperties jwtProperties) {
         this.keys = keys;
         this.expiration = jwtProperties.getExpiration();
     }

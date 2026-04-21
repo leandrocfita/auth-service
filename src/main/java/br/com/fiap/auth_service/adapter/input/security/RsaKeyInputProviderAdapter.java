@@ -1,11 +1,8 @@
-package br.com.fiap.auth_service.adapter.output.security;
+package br.com.fiap.auth_service.adapter.input.security;
 
 import br.com.fiap.auth_service.application.port.output.RsaKeyProviderPort;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyFactory;
@@ -16,7 +13,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 @Component
-public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
+public class RsaKeyInputProviderAdapter implements RsaKeyProviderPort {
 
     public static final String PRIVATE_KEY_PATH = "keys/private.pem";
     public static final String PUBLIC_KEY_PATH = "keys/public.pem";
@@ -24,7 +21,7 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
 
-    public RsaKeyProviderAdapter() throws Exception {
+    public RsaKeyInputProviderAdapter() throws Exception {
      this.privateKey = loadPrivateKey();
      this.publicKey = loadPublicKey();
     }

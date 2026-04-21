@@ -3,10 +3,29 @@ version: "3.8"
 services:
   cheffy-auth-service:
     container_name: auth-service
-    env_file: .env # This will load all variables from your .env file
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - JWT_ISSUER=${JWT_ISSUER}
     build:
       context: .
     ports:
       - "8085:8085"
     volumes:
       - ./keys:/keys
+    # --- DEBUGGING STEP ---
+    # This 'command' overrides the Dockerfile's ENTRYPOINT.
+    # It first prints all environment variables, then runs the original command.
+    # Check your 'docker-compose up' logs to see the output.
+    # Remove this 'command' block after you have verified the variables.
+    command: >
+      sh -c "
+        echo '--- Verifying Environment Variables ---'
+        printenv | sort
+        echo '-------------------------------------'
+        # Now, execute the original entrypoint from the Dockerfile
+        exec /app/init-keys.sh java -jar /app/app.jar
+      "

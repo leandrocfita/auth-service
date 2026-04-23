@@ -45,7 +45,7 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
         log.info("Loading private key from {}", this.PRIVATE_KEY_PATH);
 
-        String key = readKey(PRIVATE_KEY_PATH)
+        String key = readKey(this.PRIVATE_KEY_PATH)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
                 .replaceAll("\\s", "");
@@ -79,8 +79,6 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
     private String readKey(String path) throws Exception {
 
-
-        log.info("The path thas is send to the method is {}", path);
 
         Path filePath = Path.of(path);
 

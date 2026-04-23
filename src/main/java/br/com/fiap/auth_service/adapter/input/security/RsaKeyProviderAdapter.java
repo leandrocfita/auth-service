@@ -18,17 +18,16 @@ import java.util.Base64;
 @Component
 public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
-    @Value("${app.security.rsa.private-key-path:app/keys/private.pem}")
-    public  static String PRIVATE_KEY_PATH;
-    @Value("${app.security.rsa.public-key-path:app/keys/public.pem}")
-    public static String  PUBLIC_KEY_PATH;
-
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
 
-    public RsaKeyProviderAdapter() throws Exception {
-     this.privateKey = loadPrivateKey();
-     this.publicKey = loadPublicKey();
+    public RsaKeyProviderAdapter(
+            // Se a chave não for encontrada, ele usa "/app/keys/private.pem" por padrão
+            @Value("${app.security.rsa.private-key-path:/app/keys/private.pem}") String privatePath,
+            @Value("${app.security.rsa.public-key-path:/app/keys/public.pem}") String publicPath
+    ) throws Exception {
+        this.privateKey = loadPrivateKey(privatePath);
+        this.publicKey = loadPublicKey(publicPath);
     }
 
     @Override
@@ -41,11 +40,11 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
         return publicKey;
     }
 
-    private RSAPrivateKey loadPrivateKey() throws Exception {
+    private RSAPrivateKey loadPrivateKey(String privatePath) throws Exception {
 
-        log.info("Loading private key from {}", PRIVATE_KEY_PATH);
+        log.info("Loading private key from {}", privatePath);
 
-        String key = readKey(PRIVATE_KEY_PATH)
+        String key = readKey(privatePath)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
                 .replaceAll("\\s", "");
@@ -59,11 +58,11 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
         return (RSAPrivateKey) factory.generatePrivate(spec);
     }
 
-    private RSAPublicKey loadPublicKey() throws Exception {
+    private RSAPublicKey loadPublicKey(String publicKeyPath) throws Exception {
 
-        log.info("Loading public key from {}", PUBLIC_KEY_PATH);
+        log.info("Loading public key from {}", publicKeyPath);
 
-        String key = readKey(PUBLIC_KEY_PATH)
+        String key = readKey(publicKeyPath)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
                 .replaceAll("\\s", "");

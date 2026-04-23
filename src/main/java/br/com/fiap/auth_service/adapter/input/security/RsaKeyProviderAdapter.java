@@ -1,11 +1,10 @@
 package br.com.fiap.auth_service.adapter.input.security;
 
 import br.com.fiap.auth_service.application.port.output.RsaKeyProviderPort;
-import org.springframework.core.io.ClassPathResource;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.KeyFactory;
@@ -15,18 +14,20 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
+@Slf4j
 @Component
 public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
-
-    public static final String PRIVATE_KEY_PATH = "keys/private.pem";
-    public static final String PUBLIC_KEY_PATH = "keys/public.pem";
 
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
 
-    public RsaKeyProviderAdapter() throws Exception {
-     this.privateKey = loadPrivateKey();
-     this.publicKey = loadPublicKey();
+    public RsaKeyProviderAdapter(
+            // Se a chave não for encontrada, ele usa "/app/keys/private.pem" por padrão
+            @Value("${app.security.rsa.private-key-path:/app/keys/private.pem}") String privatePath,
+            @Value("${app.security.rsa.public-key-path:/app/keys/public.pem}") String publicPath
+    ) throws Exception {
+        this.privateKey = loadPrivateKey(privatePath);
+        this.publicKey = loadPublicKey(publicPath);
     }
 
     @Override
@@ -39,9 +40,11 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
         return publicKey;
     }
 
-    private RSAPrivateKey loadPrivateKey() throws Exception {
+    private RSAPrivateKey loadPrivateKey(String privatePath) throws Exception {
 
-        String key = readKey(PRIVATE_KEY_PATH)
+        log.info("Loading private key from {}", privatePath);
+
+        String key = readKey(privatePath)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
                 .replaceAll("\\s", "");
@@ -55,9 +58,11 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
         return (RSAPrivateKey) factory.generatePrivate(spec);
     }
 
-    private RSAPublicKey loadPublicKey() throws Exception {
+    private RSAPublicKey loadPublicKey(String publicKeyPath) throws Exception {
 
-        String key = readKey(PUBLIC_KEY_PATH)
+        log.info("Loading public key from {}", publicKeyPath);
+
+        String key = readKey(publicKeyPath)
                 .replace("-----BEGIN PUBLIC KEY-----", "")
                 .replace("-----END PUBLIC KEY-----", "")
                 .replaceAll("\\s", "");
@@ -72,6 +77,7 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
     }
 
     private String readKey(String path) throws Exception {
+
 
         Path filePath = Path.of(path);
 

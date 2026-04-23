@@ -1,10 +1,27 @@
 version: "3.8"
 
 services:
-  auth-service:
-    build: .
+  cheffy-auth-service:
+    container_name: auth-service
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRATION=${JWT_EXPIRATION}
+      - JWT_ISSUER=${JWT_ISSUER}
+    build:
+      context: .
     ports:
-      - "8080:8080"
-
+      - "8085:8085"
     volumes:
       - ./keys:/keys
+    # --- DEBUGGING STEP ---
+    # This 'command' overrides the Dockerfile's ENTRYPOINT.
+    # It first prints all environment variables, then runs the original command.
+    # Check your 'docker-compose up' logs to see the output.
+
+
+networks:
+  auth-service-network:
+    driver: bridge

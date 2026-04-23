@@ -6,14 +6,20 @@ import br.com.fiap.auth_service.application.port.output.AuthUserRepositoryPort;
 import br.com.fiap.auth_service.application.port.output.PasswordEncoderPort;
 import br.com.fiap.auth_service.application.port.output.TokenGeneratorPort;
 import br.com.fiap.auth_service.domain.AuthUser;
+import br.com.fiap.auth_service.domain.exceptions.LoginAlreadyExistsException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @Transactional
-public class AuthService implements RegisterUserUseCase, LoginUseCase {
+public class AuthService implements
+        RegisterUserUseCase,
+        LoginUseCase {
 
     private final AuthUserRepositoryPort repository;
     private final PasswordEncoderPort passwordEncoder;
@@ -48,17 +54,36 @@ public class AuthService implements RegisterUserUseCase, LoginUseCase {
     }
 
     @Override
-    public UUID register(String login, String password) {
+    public UUID register(String login, String password, String externalId) {
+
+        log.info("Registering login: {} | externalId: {}", login, externalId);
+
+        Optional<AuthUser> existing = repository.findByExternalId(externalId);
+
+        if(existing.isPresent()){
+            UUID authId = existing.get().getId();
+
+            log.info("User already exists, idempotent flow returning authId: {}", authId.toString());
+
+            return authId;
+        }
 
         repository.findByLogin(login).ifPresent(authUser -> {
-            throw new IllegalArgumentException("Login already exists");
+            log.info("User already exists, cannot register. Login: {}", login);
+            throw new LoginAlreadyExistsException();
         });
 
         AuthUser authUser = AuthUser.newUser(
-            login, passwordEncoder.encode(password)
+                login,
+                passwordEncoder.encode(password),
+                externalId
         );
 
-        return repository.save(authUser).getId();
+        UUID id = repository.save(authUser).getId();
+
+        log.info("New user registered, authId: {}", id.toString());
+
+        return id;
     }
 
 }

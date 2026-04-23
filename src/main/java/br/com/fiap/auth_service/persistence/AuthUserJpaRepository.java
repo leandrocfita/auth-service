@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface AuthUserJpaRepository extends JpaRepository<AuthUser, UUID> {
     Optional<AuthUser> findByLogin(String login);
     AuthUser save(AuthUser authUser);
+    Optional<AuthUser> findByExternalId(String externalId);
 }

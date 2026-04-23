@@ -25,7 +25,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/auth/login",
                                 "auth/register",
-                                "/.well-know.json"
+                                "/.well-known/jwks.json"
                         ).permitAll()
                         .anyRequest().denyAll()
                 )

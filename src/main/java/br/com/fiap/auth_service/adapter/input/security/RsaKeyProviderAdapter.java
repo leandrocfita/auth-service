@@ -18,10 +18,10 @@ import java.util.Base64;
 @Component
 public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
-    @Value("${app.security.rsa.private-key-path}")
-    public String PRIVATE_KEY_PATH;
-    @Value("${app.security.rsa.public-key-path}")
-    public String PUBLIC_KEY_PATH;
+    @Value("${app.security.rsa.private-key-path:app/keys/private.pem}")
+    public  static String PRIVATE_KEY_PATH;
+    @Value("${app.security.rsa.public-key-path:app/keys/public.pem}")
+    public static String  PUBLIC_KEY_PATH;
 
     private RSAPrivateKey privateKey;
     private RSAPublicKey publicKey;
@@ -43,9 +43,9 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
     private RSAPrivateKey loadPrivateKey() throws Exception {
 
-        log.info("Loading private key from {}", this.PRIVATE_KEY_PATH);
+        log.info("Loading private key from {}", PRIVATE_KEY_PATH);
 
-        String key = readKey(this.PRIVATE_KEY_PATH)
+        String key = readKey(PRIVATE_KEY_PATH)
                 .replace("-----BEGIN PRIVATE KEY-----", "")
                 .replace("-----END PRIVATE KEY-----", "")
                 .replaceAll("\\s", "");
@@ -61,7 +61,7 @@ public class RsaKeyProviderAdapter implements RsaKeyProviderPort {
 
     private RSAPublicKey loadPublicKey() throws Exception {
 
-        log.info("Loading public key from {}", this.PUBLIC_KEY_PATH);
+        log.info("Loading public key from {}", PUBLIC_KEY_PATH);
 
         String key = readKey(PUBLIC_KEY_PATH)
                 .replace("-----BEGIN PUBLIC KEY-----", "")

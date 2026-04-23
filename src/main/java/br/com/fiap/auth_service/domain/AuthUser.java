@@ -49,7 +49,6 @@ public class AuthUser {
     private Instant lastUpdated;
 
     public static AuthUser newUser(String login, String password, String externalId){
-        validatePassword(password);
         return new AuthUser(
                 null,
                 login,
@@ -61,6 +60,10 @@ public class AuthUser {
                 null,
                 null
         );
+    }
+
+    public void changePassword(String newPassword) {
+        this.password = newPassword;
     }
 
     private static final int MIN_PASSWORD_LENGTH = 12; //TODO parametrizar

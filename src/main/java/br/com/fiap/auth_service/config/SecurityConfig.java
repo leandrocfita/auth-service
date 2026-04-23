@@ -24,12 +24,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/auth/login",
-                                "auth/register",
+                                "/auth/register",
                                 "/.well-known/jwks.json"
                         ).permitAll()
-                        .anyRequest().denyAll()
+                        .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults());
+                .oauth2ResourceServer(oauth ->
+                        oauth.jwt(Customizer.withDefaults())
+                );
         return http.build();
     }
 }

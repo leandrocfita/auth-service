@@ -1,21 +1,15 @@
-package br.com.fiap.auth_service.adapter.output.security;
+package br.com.fiap.auth_service.adapter.input.security;
 
-import br.com.fiap.auth_service.application.port.input.TokenValidatorPort;
-import br.com.fiap.auth_service.application.port.output.RsaKeyProviderPort;
 import br.com.fiap.auth_service.application.port.output.TokenGeneratorPort;
 import br.com.fiap.auth_service.domain.AuthUser;
-import br.com.fiap.auth_service.security.JwtProperties;
-import br.com.fiap.auth_service.adapter.output.security.RsaKeyProviderAdapter;
-import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.Date;
 
 @Service
-public class JwtAdapter implements TokenGeneratorPort, TokenValidatorPort {
+public class JwtAdapter implements TokenGeneratorPort{
 
     private final JwtEncoder jwtEncoder;
     private final JwtDecoder jwtDecoder;
@@ -50,8 +44,4 @@ public class JwtAdapter implements TokenGeneratorPort, TokenValidatorPort {
                 .getTokenValue();
     }
 
-    @Override
-    public Jwt validate(String token) {
-        return jwtDecoder.decode(token);
-    }
 }

@@ -78,3 +78,4 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/auth-service:latest
+          platforms: linux/amd64,linux/arm64

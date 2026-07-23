@@ -29,6 +29,9 @@ WORKDIR /app
 # 3. Copia o JAR da etapa de build e o script de inicialização
 COPY --from=build /app/target/*.jar app.jar
 
+ADD https://github.com/microsoft/ApplicationInsights-Java/releases/download/3.7.8/applicationinsights-agent-3.7.8.jar /app/applicationinsights-agent.jar
+ENV APPLICATIONINSIGHTS_ROLE_NAME="auth-service"
+
 RUN mkdir -p /app/keys && chown -R appuser:appgroup /app/keys
 COPY init-keys.sh /app/docker/init-keys.sh
 
@@ -40,4 +43,4 @@ USER appuser
 
 # 6. Define o entrypoint para o nosso script, que então iniciará a aplicação Java
 ENTRYPOINT ["/app/docker/init-keys.sh"]
-CMD ["java", "-jar", "/app/app.jar"]
+CMD ["java", "-javaagent:/app/applicationinsights-agent.jar", "-jar", "/app/app.jar"]
